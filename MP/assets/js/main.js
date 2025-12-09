@@ -32,30 +32,10 @@ function calculate() {
     let VT = (vtUnit === "mL") ? VTraw / 1000 : VTraw;
 
     // Mechanical power
-    let result = 0.098 * RR * VT * (Pplat - 0.5 * (PIP - PEEP));
+    let result = 0.098 * RR * VT * (PIP - 0.5 * ( Pplat- PEEP));
 
     // Output
     document.getElementById("result").textContent = result.toFixed(2);
-
-    // Interpretation
-    let interpretationBox = document.getElementById("interpretation");
-
-    // Determine color
-    if (result < 12) {
-        interpretationBox.textContent = "Low mechanical power";
-        interpretationBox.style.backgroundColor = "#d4edda";   // Green
-        interpretationBox.style.color = "#155724";
-    } 
-    else if (result < 18) {
-         interpretationBox.textContent = "Moderate mechanical power";
-        interpretationBox.style.backgroundColor = "#fff3cd";   // Yellow
-        interpretationBox.style.color = "#856404";
-    } 
-    else {
-         interpretationBox.textContent = "High mechanical power";
-        interpretationBox.style.backgroundColor = "#f8d7da";   // Red
-        interpretationBox.style.color = "#721c24";
-    }
 }
 
 // Auto-recalculate on input change
