@@ -113,8 +113,9 @@
     </nav>
     <div class="flex-fill">
         <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-1">Dynamic</a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-1">VC</a></li>
             <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-2">PC</a></li>
+            <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-3">Dynamic</a></li>
         </ul>
         <div class="tab-content flex-fill">
             <div class="tab-pane active" role="tabpanel" id="tab-1">
@@ -128,29 +129,47 @@
                                 <div class="card-body">
                                     <div class="row align-items-center mb-3">
                                         <div class="col"><label class="col-form-label">RR</label></div>
-                                        <div class="col-8"><input type="number" class="form-control calc-input" id="rr"></div>
+                                        <div class="col-8"><input type="number" id="vc_rr" class="form-control" onchange="calc_mp_vc()"></div>
                                     </div>
                                     <div class="row align-items-center mb-3">
                                         <div class="col"><label class="col-form-label">VT</label></div>
                                         <div class="col-12 col-sm-2 mt-2 mt-sm-0">
-                                            <div class="btn-group w-100" role="group"><button class="btn btn-outline-primary active" type="button" id="btnML">mL</button><button class="btn btn-outline-primary" type="button" id="btnL">L</button></div>
+                                            <div class="btn-group w-100 switch" role="group" id="vc_vt_unit" onchange="calc_mp_vc()"><button class="btn btn-outline-primary active" type="button" data-value="mL">mL</button><button class="btn btn-outline-primary" type="button" data-value="L">L</button></div>
                                         </div>
-                                        <div class="col-12 col-sm-6 mt-2 mt-sm-0"><input type="number" class="form-control calc-input" id="vt" step="0.1"></div>
+                                        <div class="col-12 col-sm-6 mt-2 mt-sm-0"><input type="number" id="vc_vt" class="form-control" step="0.1" onchange="calc_mp_vc()"></div>
                                     </div>
                                     <div class="row align-items-center mb-3">
                                         <div class="col"><label class="col-form-label">PIP</label></div>
-                                        <div class="col-8"><input type="number" class="form-control calc-input" id="pip"></div>
+                                        <div class="col-8"><input type="number" id="vc_pip" class="form-control" onchange="calc_mp_vc()"></div>
                                     </div>
                                     <div class="row align-items-center mb-3">
                                         <div class="col"><label class="col-form-label">Pplat</label></div>
-                                        <div class="col-8"><input type="number" class="form-control calc-input" id="pplat"></div>
+                                        <div class="col-8"><input type="number" id="vc_pplat" class="form-control" onchange="calc_mp_vc()"></div>
                                     </div>
                                     <div class="row align-items-center mb-3">
                                         <div class="col"><label class="col-form-label">PEEP</label></div>
-                                        <div class="col-8"><input type="number" class="form-control calc-input" id="peep"></div>
+                                        <div class="col-8"><input type="number" id="vc_peep" class="form-control" onchange="calc_mp_vc()"></div>
                                     </div>
                                     <hr>
-                                    <h4 class="text-center"> Result: <span id="result">0</span></h4>
+                                    <h4 class="text-center"> Result: <span id="vc_result">0</span></h4>
+                                    <div class="table-responsive" style="text-align: center;">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Static</th>
+                                                    <th>Dynamic</th>
+                                                    <th>Restrictive</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td id="vc_static">0.0</td>
+                                                    <td id="vc_dynamic">0.0</td>
+                                                    <td id="vc_restrictive">0.0</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,10 +177,72 @@
                 </div>
             </div>
             <div class="tab-pane" role="tabpanel" id="tab-2">
-                <p>Content for tab 2.</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col" style="text-align: center;padding-bottom: 24px;padding-top: 24px;"><code style="font-weight: bold;">0.098 * RR * VT * (<strong>ΔPdyn + PEEP</strong>)</code></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">RR</label></div>
+                                        <div class="col-8"><input type="number" id="pc_rr" class="form-control" onchange="calc_mp_pc()"></div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">VT</label></div>
+                                        <div class="col-12 col-sm-2 mt-2 mt-sm-0">
+                                            <div class="btn-group w-100 switch" role="group" id="pc_vt_unit" onchange="calc_mp_pc()"><button class="btn btn-outline-primary active" type="button" data-value="mL">mL</button><button class="btn btn-outline-primary" type="button" data-value="L">L</button></div>
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-2 mt-sm-0"><input type="number" id="pc_vt" class="form-control" step="0.1" onchange="calc_mp_pc()"></div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">PIP</label></div>
+                                        <div class="col-8"><input type="number" id="pc_pip" class="form-control" onchange="calc_mp_pc()"></div>
+                                    </div>
+                                    <hr>
+                                    <h4 class="text-center"> Result: <span id="pc_result">0</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="tab-pane" role="tabpanel" id="tab-3">
-                <p>Content for tab 3.</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col" style="text-align: center;padding-bottom: 24px;padding-top: 24px;"><code style="font-weight: bold;">0.098 * RR * VT * (Ppeak - 0.5 *&nbsp;ΔPdyn )</code></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">RR</label></div>
+                                        <div class="col-8"><input type="number" id="dyn_rr" class="form-control" onchange="calc_mp_dyn()"></div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">VT</label></div>
+                                        <div class="col-12 col-sm-2 mt-2 mt-sm-0">
+                                            <div class="btn-group w-100 switch" role="group" id="dyn_vt_unit" onchange="calc_mp_dyn()"><button class="btn btn-outline-primary active" type="button" data-value="mL">mL</button><button class="btn btn-outline-primary" type="button" data-value="L">L</button></div>
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-2 mt-sm-0"><input type="number" id="dyn_vt" class="form-control" step="0.1" onchange="calc_mp_dyn()"></div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">PIP</label></div>
+                                        <div class="col-8"><input type="number" id="dyn_pip" class="form-control" onchange="calc_mp_dyn()"></div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col"><label class="col-form-label">PEEP</label></div>
+                                        <div class="col-8"><input type="number" id="dyn_peep" class="form-control" onchange="calc_mp_dyn()"></div>
+                                    </div>
+                                    <hr>
+                                    <h4 class="text-center"> Result: <span id="dyn_result">0</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
